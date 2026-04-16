@@ -12,7 +12,7 @@ class Student:
 students = []
 
 
-# 🔹 Load data from file
+# 🔹 Load students from file
 def load_students():
     if os.path.exists("students.txt"):
         with open("students.txt", "r") as file:
@@ -21,7 +21,7 @@ def load_students():
                 students.append(Student(name, roll))
 
 
-# 🔹 Save student to file
+# 🔹 Save new student
 def save_student(name, roll):
     with open("students.txt", "a") as file:
         file.write(f"{name},{roll}\n")
@@ -67,7 +67,7 @@ def delete_student():
         if s.roll == roll:
             students.remove(s)
 
-            # rewrite file after deletion
+            # rewrite file
             with open("students.txt", "w") as file:
                 for stu in students:
                     file.write(f"{stu.name},{stu.roll}\n")
@@ -78,15 +78,38 @@ def delete_student():
     print("Student not found.\n")
 
 
+def update_student():
+    roll = input("Enter roll to update: ")
+
+    for s in students:
+        if s.roll == roll:
+            new_name = input("Enter new name: ")
+            new_roll = input("Enter new roll: ")
+
+            s.name = new_name
+            s.roll = new_roll
+
+            # rewrite file
+            with open("students.txt", "w") as file:
+                for stu in students:
+                    file.write(f"{stu.name},{stu.roll}\n")
+
+            print("Student updated.\n")
+            return
+
+    print("Student not found.\n")
+
+
 def main():
-    load_students()  # 🔥 load on start
+    load_students()  # load on start
 
     while True:
         print("1. Add Student")
         print("2. View Students")
         print("3. Search Student")
         print("4. Delete Student")
-        print("5. Exit")
+        print("5. Update Student")
+        print("6. Exit")
 
         choice = input("Enter choice: ")
 
@@ -99,10 +122,12 @@ def main():
         elif choice == "4":
             delete_student()
         elif choice == "5":
+            update_student()
+        elif choice == "6":
             print("Exiting...")
             break
         else:
             print("Invalid choice\n")
 
 
-main() 
+main()
